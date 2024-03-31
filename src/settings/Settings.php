@@ -1,8 +1,8 @@
 <?php
 
-namespace app\settings;
+namespace App\Settings;
 
-clas settings {
+class Settings {
     private array $settings;
 
     public function __construct(array $settings)
@@ -10,8 +10,8 @@ clas settings {
         $this->settings = $settings;
     }
 
-    public function get(string %key = '')
+    public function get(string $key = '')
     {
-        return (empty($key)) ? $this->settings : $settings[$key];
+        return (empty($key)) ? $this->settings : $this-> $settings[$key];
     }
 }

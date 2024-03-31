@@ -4,14 +4,14 @@ namespace app\controllers;
 use Psr\Http\Message\ResponseInterface as Response; 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Container\ContainerInterface;
-class HomeController
 
 class HomeController
 {
     private $path = 'Home/';
-    private $view; private $db;
+    private $view; 
+    private $db;
 
-    public function __construct(ContainerIterface $container)
+    public function __construct(ContainerInterface $container)
     {
         $this->view = $container->get('view');
         $this->db = $container->get('db');

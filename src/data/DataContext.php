@@ -2,7 +2,7 @@
 
 namespace app\data;
 
-use app\models\Libro;
+use App\Models\Libro;
 use mysqli;
 
 class DataContext
@@ -10,36 +10,34 @@ class DataContext
     static $mysqli;
     private array $settings;
 
-    function __contruct(array $settings)
+    public function __construct(array $settings)
     {
         $this->settings = $settings;
         self::conectar();
     }
 
-    function __destruct()
+    public function __destruct()
     {
-        self::$mysqli->close()
+        self::$mysqli->close();
     }
 
     protected function conectar()
     {
         self::$mysqli = new mysqli(
             $this->settings['db']['host'],
-            $this->settings['db']['database'],
-            $this->settings['db']['database'],
+            $this->settings['db']['username'], // Cambiado de 'database' a 'username'
+            $this->settings['db']['password'], // Cambiado de 'database' a 'password'
             $this->settings['db']['database']
-        )
-    }
+        );
 
-
-    if(self::$mysqli->connect_error){
-        die('Error de conexión ('. self::$mysqli->connect_error . ')' . self::$mysqli->connect_error);
-
+        if(self::$mysqli->connect_error){
+            die('Error de conexión ('. self::$mysqli->connect_errno . ')' . self::$mysqli->connect_error);
+        }
     }
 
     public function obten_libros()
     {
-        $consulta = 'SELECT libro.id, libro.nombre, libro.precio, editorial.nombre, AS editorial_nombre FROm editorial INNER JOIN libro ON editorial.id = libro.id_editorial';
+        $consulta = 'SELECT libro.id, libro.nombre, libro.precio, editorial.nombre AS editorial_nombre FROM editorial INNER JOIN libro ON editorial.id = libro.id_editorial';
 
         $sentencia = self::$mysqli->prepare($consulta);
 
@@ -49,7 +47,7 @@ class DataContext
 
         $libros = [];
         while ($fila = $resultado->fetch_assoc()):
-            $item = new Libro( $fila["id"], $fila["nombre"], $fila["precio"], $fila["editorial_nombre"]);
+            $item = new Libro($fila["id"], $fila["nombre"], $fila["precio"], $fila["editorial_nombre"]);
             $libros[] = $item->jsonSerialize();
         endwhile;
 
